@@ -1,0 +1,15 @@
+{
+  "name": "eco-scraper",
+  "version": "1.0.0",
+  "description": "Economist magazine web scraper",
+  "main": "app.js",
+  "scripts": {
+    "start": "npm run client && npm run server",
+    "server": "npm run start --prefix server",
+    "client": "npm run start --prefix client",
+    "server:setup": "cd server && npm install"
+  },
+  "author": "Nikola Pejcinovic",
+  "license": "ISC",
+  "dependencies": {}
+}

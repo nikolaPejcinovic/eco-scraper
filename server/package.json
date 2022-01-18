@@ -1,0 +1,20 @@
+{
+  "name": "eco-scraper-server",
+  "version": "1.0.0",
+  "description": "Economist magazine web scraper server",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nikola Pejcinovic",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.1",
+    "cors": "^2.8.5",
+    "dotenv": "^12.0.4",
+    "express": "^4.17.2",
+    "mongoose": "^6.1.6",
+    "puppeteer": "^13.0.1"
+  }
+}
