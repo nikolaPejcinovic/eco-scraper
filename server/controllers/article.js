@@ -19,9 +19,7 @@ exports.findAll = async (_, res) => {
       page: null,
       initialize: async () => {
         try {
-          economist.browser = await puppeteer.launch({
-            headless: false,
-          });
+          economist.browser = await puppeteer.launch();
           economist.page = await economist.browser.newPage();
         } catch (e) {
           console.log(e);
@@ -45,7 +43,6 @@ exports.findAll = async (_, res) => {
               const headline = el.querySelector("h3");
               const deck = el.querySelector("p");
               const anchor = el.querySelector("a");
-              const image = el.querySelector("img");
 
               return {
                 headline: headline.textContent,
