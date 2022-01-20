@@ -40,7 +40,7 @@ export function Input({ value, onChange, onClick, loading, buttonAction }) {
             loadingPosition="start"
             startIcon={<LoginIcon />}
             variant="contained"
-            disabled={!value.length || value.length >= 10}
+            disabled={!value.length || value.length > 10}
             sx={{
               borderRadius: 3,
               textTransform: "none",
