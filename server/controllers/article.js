@@ -55,6 +55,7 @@ exports.findAll = async (req, res) => {
               "1843 magazine",
               "Checks and Balance",
               "Tracking Omicron",
+              "Daily briefing | The Economist",
             ].includes(a.headline) && articlesItems.push(a)
         );
 
@@ -91,21 +92,17 @@ exports.findAll = async (req, res) => {
       },
     };
 
-    // await Article.remove({});
+    await Article.deleteMany({});
 
-    let articles = await Article.find();
+    await economist.initialize();
+    await economist.open(process.env.NODE_APP_SCRAPER_URL);
+    await economist.getArticlesList();
+    await economist.initialize();
+    await economist.getArticles();
 
-    if (!articles.length) {
-      await economist.initialize();
-      await economist.open(process.env.NODE_APP_SCRAPER_URL);
-      await economist.getArticlesList();
-      await economist.initialize();
-      await economist.getArticles();
+    await Article.insertMany(articlesItems);
 
-      await Article.insertMany(articlesItems);
-
-      articles = await Article.find();
-    }
+    const articles = await Article.find();
 
     return res.status(200).send(articles);
   } catch (e) {
