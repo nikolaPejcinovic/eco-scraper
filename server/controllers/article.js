@@ -10,7 +10,7 @@ const Article = db.articles;
 // Constants
 const { messages } = require("../constants/messages");
 
-exports.findAll = async (req, res) => {
+exports.findAll = async (_, res) => {
   const articlesItems = [];
 
   try {
@@ -18,46 +18,58 @@ exports.findAll = async (req, res) => {
       browser: null,
       page: null,
       initialize: async () => {
-        economist.browser = await puppeteer.launch({
-          headless: false,
-        });
-        economist.page = await economist.browser.newPage();
+        try {
+          economist.browser = await puppeteer.launch({
+            headless: false,
+          });
+          economist.page = await economist.browser.newPage();
+        } catch (e) {
+          console.log(e);
+        }
       },
       open: async (url) => {
-        await economist.page.goto(url, {
-          waitUntil: ["domcontentloaded"],
-        });
+        try {
+          await economist.page.goto(url, {
+            waitUntil: ["domcontentloaded"],
+          });
+        } catch (e) {
+          console.log(e);
+        }
       },
       getArticlesList: async () => {
-        await economist.page.waitForSelector("body", { state: "visible" });
+        try {
+          await economist.page.waitForSelector("body", { state: "visible" });
 
-        const articlesData = await economist.page.evaluate(() =>
-          Array.from(document.querySelectorAll(".e1yv2jhn0"), (el) => {
-            const headline = el.querySelector("h3");
-            const deck = el.querySelector("p");
-            const anchor = el.querySelector("a");
-            const image = el.querySelector("img");
+          const articlesData = await economist.page.evaluate(() =>
+            Array.from(document.querySelectorAll(".e1yv2jhn0"), (el) => {
+              const headline = el.querySelector("h3");
+              const deck = el.querySelector("p");
+              const anchor = el.querySelector("a");
+              const image = el.querySelector("img");
 
-            return {
-              headline: headline.textContent,
-              deck: deck?.textContent || null,
-              link: anchor.href,
-              textParagraphs: [],
-              imgUrl: image?.src || null,
-              date: null,
-            };
-          })
-        );
+              return {
+                headline: headline.textContent,
+                deck: deck?.textContent || null,
+                link: anchor.href,
+                textParagraphs: [],
+                imgUrl: image?.src || null,
+                date: null,
+              };
+            })
+          );
 
-        articlesData.forEach(
-          (a) =>
-            ![
-              "1843 magazine",
-              "Checks and Balance",
-              "Tracking Omicron",
-              "Daily briefing | The Economist",
-            ].includes(a.headline) && articlesItems.push(a)
-        );
+          articlesData.forEach(
+            (a) =>
+              ![
+                "1843 magazine",
+                "Checks and Balance",
+                "Tracking Omicron",
+                "Daily briefing | The Economist",
+              ].includes(a.headline) && articlesItems.push(a)
+          );
+        } catch (e) {
+          console.log(e);
+        }
 
         economist.browser.close();
       },
