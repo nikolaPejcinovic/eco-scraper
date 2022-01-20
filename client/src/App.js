@@ -1,13 +1,21 @@
 // Routes
 import AppRoutes from "routes/AppRoutes";
 
-// Theme provider
+// Providers
 import EcoScraperThemeProvider from "theme";
+import { DrawerProvider, LinearProgressProvider } from "contexts";
+import { ToastProvider } from "contexts/ToastContext/ToastContext";
 
 function App() {
   return (
     <EcoScraperThemeProvider>
-      <AppRoutes />
+      <ToastProvider>
+        <LinearProgressProvider>
+          <DrawerProvider>
+            <AppRoutes />
+          </DrawerProvider>
+        </LinearProgressProvider>
+      </ToastProvider>
     </EcoScraperThemeProvider>
   );
 }

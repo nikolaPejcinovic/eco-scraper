@@ -1,9 +1,13 @@
-module.exports = app => {
-  const articles = require("../controllers/article.js");
+// Controllers
+const articles = require("../controllers/article.js");
 
-  const router = require("express").Router();
+// Middleware
+const { authJwt } = require("../middleware");
 
-  router.get("/", articles.findAll);
+// Router
+const router = require("express").Router();
 
-  app.use("/articles", router);
-};
+router.get("/articles", authJwt.verifyToken, articles.findAll);
+router.get("/articles/:id", authJwt.verifyToken, articles.findOne);
+
+module.exports = router;

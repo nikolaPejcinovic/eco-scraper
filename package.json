@@ -10,6 +10,5 @@
     "server:setup": "cd server && npm install"
   },
   "author": "Nikola Pejcinovic",
-  "license": "ISC",
-  "dependencies": {}
+  "license": "ISC"
 }

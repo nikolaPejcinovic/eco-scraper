@@ -1,4 +1,4 @@
-module.exports = mongoose => {
+module.exports = (mongoose) => {
   const schema = mongoose.Schema(
     {
       headline: String,
@@ -6,7 +6,7 @@ module.exports = mongoose => {
       link: String,
       imgUrl: String,
       textParagraphs: [String],
-      date: String
+      date: String,
     },
     { timestamps: true }
   );

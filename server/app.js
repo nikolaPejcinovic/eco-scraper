@@ -9,8 +9,8 @@ const app = express();
 const corsOptions = {
   origin: [
     process.env.NODE_APP_ORIGIN_SERVER,
-    process.env.NODE_APP_ORIGIN_CLIENT
-  ]
+    process.env.NODE_APP_ORIGIN_CLIENT,
+  ],
 };
 
 app.use(cors(corsOptions));
@@ -27,7 +27,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
     await db.connect(url, {
       useNewUrlParser: true,
-      useUnifiedTopology: true
+      useUnifiedTopology: true,
     });
 
     console.log("Connected to the database!");
@@ -37,7 +37,20 @@ app.use(bodyParser.urlencoded({ extended: true }));
   }
 })();
 
-require("./routes/article.js")(app);
+app.use((req, res, next) => {
+  res.header(
+    "Access-Control-Allow-Headers",
+    "x-access-token, Origin, Content-Type, Accept"
+  );
+  next();
+});
+
+// Routes
+const authRoutes = require("./routes/auth.js");
+const articleRoutes = require("./routes/article.js");
+
+app.use(authRoutes);
+app.use(articleRoutes);
 
 // set port, listen for requests
 const PORT = process.env.NODE_APP_PORT || 8080;

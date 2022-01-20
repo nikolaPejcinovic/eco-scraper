@@ -9,5 +9,6 @@ const db = {};
 db.mongoose = mongoose;
 db.url = dbConfig.url;
 db.articles = require("./article.js")(mongoose);
+db.user = require("./user.js")(mongoose);
 
 module.exports = db;

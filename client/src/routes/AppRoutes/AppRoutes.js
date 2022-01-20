@@ -1,25 +1,23 @@
+import { lazy, Suspense } from "react";
+
 // Components
-import { PrivateRoute } from "components/PrivateRoute";
+import { Loading, PrivateRoute } from "components";
 import { Routes, Route } from "react-router-dom";
 
-// Service
-import { useGetArticles } from "service/articles";
+// Constants
+import {
+  ARTICLES,
+  ERROR,
+  LOGIN,
+  NOT_FOUND_MESSAGE,
+  REGISTER,
+} from "constants/index";
 
-function Home() {
-  const { data, error, isLoading } = useGetArticles(null, {
-    refetchOnFocus: true
-  });
-
-  if (isLoading) {
-    return <div>LOADING</div>;
-  }
-  console.log(data);
-  return <div>HOME</div>;
-}
-
-function Login() {
-  return <div>LOGIN</div>;
-}
+// Routes
+const Login = lazy(() => import("routes/Login"));
+const Register = lazy(() => import("routes/Register"));
+const Articles = lazy(() => import("routes/Articles"));
+const ErrorPage = lazy(() => import("routes/ErrorPage"));
 
 function AppRoutes() {
   return (
@@ -29,12 +27,59 @@ function AppRoutes() {
         path="/"
         element={
           <PrivateRoute>
-            <Home />
+            <Suspense fallback={<Loading />}>
+              <Articles />
+            </Suspense>
           </PrivateRoute>
         }
       />
-      <Route exact path="login" element={<Login />} />
-      <Route exact path="*" component={() => <div>Not found</div>} />
+      <Route
+        exact
+        path={ARTICLES}
+        element={
+          <PrivateRoute>
+            <Suspense fallback={<Loading />}>
+              <Articles />
+            </Suspense>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        exact
+        path={LOGIN}
+        element={
+          <Suspense fallback={<Loading />}>
+            <Login />
+          </Suspense>
+        }
+      />
+      <Route
+        exact
+        path={REGISTER}
+        element={
+          <Suspense fallback={<Loading />}>
+            <Register />
+          </Suspense>
+        }
+      />
+      <Route
+        exact
+        path={ERROR}
+        element={
+          <Suspense fallback={<Loading />}>
+            <ErrorPage />
+          </Suspense>
+        }
+      />
+      <Route
+        exact
+        path="*"
+        element={
+          <Suspense fallback={<Loading />}>
+            <ErrorPage message={NOT_FOUND_MESSAGE} />
+          </Suspense>
+        }
+      />
     </Routes>
   );
 }
