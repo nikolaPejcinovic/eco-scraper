@@ -4,11 +4,16 @@
   "description": "Economist magazine web scraper",
   "main": "app.js",
   "scripts": {
-    "start": "npm run client && npm run server",
     "server": "npm run start --prefix server",
     "client": "npm run start --prefix client",
-    "server:setup": "cd server && npm install"
+    "server:setup": "cd server && npm install",
+    "client:setup": "cd client && npm install",
+    "setup:dev": "concurrently -n 'server,client' -c 'red,green' \"npm run server:setup\" \"npm run client:setup\"",
+    "start:dev": "concurrently -n 'server,client' -c 'red,green' \"npm run server\" \"npm run client\""
   },
   "author": "Nikola Pejcinovic",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^7.0.0"
+  }
 }
