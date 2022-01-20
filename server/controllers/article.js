@@ -52,7 +52,7 @@ exports.findAll = async (_, res) => {
                 deck: deck?.textContent || null,
                 link: anchor.href,
                 textParagraphs: [],
-                imgUrl: image?.src || null,
+                imgUrl: null,
                 date: null,
               };
             })
@@ -91,10 +91,13 @@ exports.findAll = async (_, res) => {
               (el) => el.textContent
             );
 
+            const img = await economist.page.$eval("img", (el) => el.src);
+
             textsData.forEach(
               (t) => t && articlesItems[i].textParagraphs.push(t)
             );
             articlesItems[i].date = date;
+            articlesItems[i].imgUrl = img;
           } catch (e) {
             console.log(e);
           }
