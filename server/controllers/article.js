@@ -49,8 +49,8 @@ exports.findAll = async (_, res) => {
 
             return {
               headline: headline.textContent,
-              deck: deck?.textContent || null,
-              link: anchor.href,
+              deck: deck?.textContent,
+              link: anchor?.href,
               textParagraphs: [],
               imgUrl: img?.src,
               date: null
@@ -58,18 +58,20 @@ exports.findAll = async (_, res) => {
           })
         );
 
-        articlesData.forEach(
-          a =>
-            ![
-              "1843 magazine",
-              "Checks and Balance",
-              "Tracking Omicron",
-              "Daily briefing | The Economist",
-              "The Economist explains",
-              "The Intelligence",
-              "The normalcy index"
-            ].includes(a.headline) && articlesItems.push(a)
-        );
+        articlesData
+          .filter(a => a.headline)
+          .forEach(
+            a =>
+              ![
+                "1843 magazine",
+                "Checks and Balance",
+                "Tracking Omicron",
+                "Daily briefing | The Economist",
+                "The Economist explains",
+                "The Intelligence",
+                "The normalcy index"
+              ].includes(a.headline) && articlesItems.push(a)
+          );
       } catch (e) {
         throw new Error(e);
       }
